@@ -21,7 +21,7 @@ class Movie :
     @  movie_type.setter
     def movie_type (self,value):#_value, nie potrzebne i nie wykorzystane setter
         type=['Action','Musical','Historic','Komedy']
-        self._movie_type =type[fake.random_int(min=0, max=3)]
+        self._movie_type =type[fake.random_int(min=0, max=len(type))]
 
 # metoda self.numb_of_play=numb_of_play#__________Liczba odtworzeń___
 # metoda play---------_TODO_________________________ziekszanie odtworzen o 1 
