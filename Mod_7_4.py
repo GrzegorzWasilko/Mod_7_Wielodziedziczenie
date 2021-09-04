@@ -3,6 +3,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s',filename="logfile-runningcount.log")
 from faker import Faker
 fake=Faker()
+import random
 #********************************************************************************************
 #_____Base_class___________________class__Movie_________________________________Klasa Bazowa
 class Movie :
@@ -30,16 +31,19 @@ class Movie :
 class Series(Movie):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.season_numb=f"S-{fake.random_int(min=1, max=5)}"#notacja 2cyfrowa<<<<<<<<<<<<<<<<<<<<<<<<<<<<__TO__DO
-        self.episod_numb=f"E-{fake.random_int(min=1, max=12)}"    
+        self.season_numb=f"S{fake.random_int(min=1, max=5):02}"#notacja 2cyfrowa<<<<<<<<<<<<<<<<<<<<<<<<<<<<__TO__DO
+        self.episod_numb=f"E{fake.random_int(min=1, max=12):02}"    
 
     def __str__(self):
         return (f'Title:{self.title},{self.season_numb} {self.episod_numb}')
 #__________________________________class__E_N_D______________________________________________
 def get_movies(movie_liblary):#_____________________________________________sortowanie  movie
+    x=[]
     for movie in movie_liblary:
         if type(movie) ==  Movie :
-            print(movie)
+            x.append(movie)
+    for m in x:   
+        print(m)
 
 def get_series(movie_liblary):#_____________________________________________sortowanie series
     for series in movie_liblary:
@@ -51,11 +55,17 @@ def search(movie_liblary):#___________________________________wyszukuje film z l
     for x in movie_liblary:
         if x.title[0]  ==  wanted:
             print(f"Pozycja znajduje się w bazie : {x} ")
-    pass
-def generate_vievs(movie_liblary):#_____losowo od 1 do 100 zwiększa wyswietlenia
-    pass
-def generate_vievs(movie_liblary):#_____10 wyswietlen dodaje
-    pass
+
+def generate_vievs(movie_liblary):#_____losowo od 1 do 100 zwiększa wyswietlenia    
+    for i in range( random.randint(1,100)):
+        random.shuffle(movie_liblary)#__________mieszam kolejność elementów
+        for j in movie_liblary:#______________iteruje po pomieszanej bibliotece
+            movie_liblary[0].generate_vives()#______w 1 poz zwiększe oglądalność
+
+def generate_vievs_10(movie_liblary):#_____10 wyswietlen dodaje
+    for i in range(10):
+        generate_vievs(movie_liblary)
+
 def top_titles(movie_liblary):  #_____zwraca wybrana ilość najpopularniejszych tytułow z bilioteki
     pass                    #content type - zmienna po której decyduje czy wybieram top filmy czy seriale
 
@@ -63,7 +73,7 @@ def top_titles(movie_liblary):  #_____zwraca wybrana ilość najpopularniejszych
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 if __name__ == "__main__":
     logging.info(f"uruhomiono :")
-    print("***********************************\n*******  Bilioteka  filmów  *******\n***********************************")
+    print("****************************************\n*******    Bilioteka  filmów     *******\n****************************************")
     movie_liblary=[]
     for x in range(25):#_______________________________________________________________________add_Movies_in_liblary
         x=Movie()
@@ -72,10 +82,12 @@ if __name__ == "__main__":
         series=Series()
         movie_liblary.append(series)
     
-    get_movies(movie_liblary)#__________________________________________________________________add_Movies_in_liblary
-    get_series(movie_liblary)#__________________________________________________________________add_Series_in_liblary
-    #search(movie_liblary)#__________________________________________________________________wyszukiwanie _ in_liblary
+    get_movies(movie_liblary)#__________________________________________________________________add_Movies_in_liblary 
+    get_series(movie_liblary)#__________________________________________________________________add_Series_in_liblary 
+    #search(movie_liblary)#__________________________________________________________________wyszukiwanie _ in_liblary 
     for x in movie_liblary:
         pass#print(x)    
-
-
+    generate_vievs(movie_liblary)
+    generate_vievs_10(movie_liblary)
+    for x in movie_liblary:
+        print(x.numb_of_play,x.title)
