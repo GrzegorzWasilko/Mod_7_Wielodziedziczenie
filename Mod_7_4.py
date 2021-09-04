@@ -4,50 +4,78 @@ logging.basicConfig(level=logging.DEBUG,format='%(asctime)s',filename="logfile-r
 from faker import Faker
 fake=Faker()
 #********************************************************************************************
-
 #_____Base_class___________________class__Movie_________________________________Klasa Bazowa
 class Movie :
-    def __init__(self,title,publication_date):#numb_of_play
-        self.title=title                           #____Tytuł________<<-->>_fake.words(nb=3)
-        self.publication_date=publication_date     #____Rok wydania__<<-->>______fake.date()
-        self.movie_type=None                       #____Gatunek______<<-->>_fake.word(ext_word_list=(['Action','Musical','Historic'])/fake.random_int(min=0, max=15)
-#__________________________________________________#____Liczba odtworzeń_TODO
-#__________________________________Methods____________________________________________________
+    def __init__(self):                                 
+        self.title = fake.texts(nb_texts=1,max_nb_chars=19) #__Tytuł____<<-->>_fake.words(nb=3)
+        self.publication_date = fake.year()           #____Rok wydania__<<-->>______fake.date()
+        self.movie_type = None                        #____Gatunek______<<-->>______fake.word()
+        self.numb_of_play = 0
+#________________________________________________________________________________________________
     def __str__(self):
-        return (f'Tytuł: {self.title}, gatunek: {self.movie_type}, premiera: {self.publication_date}') #--------lambda do title np lambda:self.movie_type:**args=elf.movie_type.split()
+        return (f'Tytuł: {self.title} ( {self.publication_date} )')
     @property
     def movie_type (self):
         return self._movie_type
     @  movie_type.setter
-    def movie_type (self,value):#_value, nie potrzebne i nie wykorzystane setter
-        type=['Action','Musical','Historic','Komedy']
-        self._movie_type =type[fake.random_int(min=0, max=len(type))]
+    def movie_type (self,value):
+        type=['Action','Musical','Historic','Komedy','Anime']
+        self._movie_type =type[fake.random_int(min=0, max=(len(type)-1))]
 
-# metoda self.numb_of_play=numb_of_play#__________Liczba odtworzeń___
-# metoda play---------_TODO_________________________ziekszanie odtworzen o 1 
+    def generate_vives(self):
+        self.numb_of_play+=1        
+#_______________________________________E_N_D__________________________________________________
 
-
-
-#_____Child_class__________________class__Series_______________________________Klasa Potomna
+#__________________________________class__Series_______________________________Klasa Potomna
 class Series(Movie):
-    def __init__(self,episod_numb,season_numb,*args,**kwargs):
+    def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.episod_numb=episod_numb
-        self.season_numb=season_numb
-        
-# self.numb_of_play=numb_of_play#__________Liczba odtworzeń_______TODO<<<<<<<<<<<<<<<<<<<<
-# metoda play---------_TODO
-def __str__(self):#nr odcinka i nr sezonu 
-    return (f'Tytuł: {self.title}, gatunek: {self.movie_type}, premiera: {self.publication_date}')
+        self.season_numb=f"S-{fake.random_int(min=1, max=5)}"#notacja 2cyfrowa<<<<<<<<<<<<<<<<<<<<<<<<<<<<__TO__DO
+        self.episod_numb=f"E-{fake.random_int(min=1, max=12)}"    
 
-#**********************************************************************************************
-#**********************************************************************************************
+    def __str__(self):
+        return (f'Title:{self.title},{self.season_numb} {self.episod_numb}')
+#__________________________________class__E_N_D______________________________________________
+def get_movies(movie_liblary):#_____________________________________________sortowanie  movie
+    for movie in movie_liblary:
+        if type(movie) ==  Movie :
+            print(movie)
+
+def get_series(movie_liblary):#_____________________________________________sortowanie series
+    for series in movie_liblary:
+        if type(series) ==  Series:
+            print(series)
+
+def search(movie_liblary):#___________________________________wyszukuje film z listy po nazwie
+    wanted=input("wpisz szukany tytuł : ")
+    for x in movie_liblary:
+        if x.title[0]  ==  wanted:
+            print(f"Pozycja znajduje się w bazie : {x} ")
+    pass
+def generate_vievs(movie_liblary):#_____losowo od 1 do 100 zwiększa wyswietlenia
+    pass
+def generate_vievs(movie_liblary):#_____10 wyswietlen dodaje
+    pass
+def top_titles(movie_liblary):  #_____zwraca wybrana ilość najpopularniejszych tytułow z bilioteki
+    pass                    #content type - zmienna po której decyduje czy wybieram top filmy czy seriale
+
+
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 if __name__ == "__main__":
-    logging.info("uruhomiono :")
-    print("Bilioteka filmów")
-#______________tytuł________rok_wydania___gatunek__nr gatunku z lity w lini 22
-film=Movie(fake.words(nb=3),fake.year())#,fake.random_int(min=0, max=2))#_______fake.int_to arg dla nr gatunku w property.setter le jest int zamiast str
-print(film.title)
-print(film.movie_type)
-print(film)
-print('\n')
+    logging.info(f"uruhomiono :")
+    print("***********************************\n*******  Bilioteka  filmów  *******\n***********************************")
+    movie_liblary=[]
+    for x in range(25):#_______________________________________________________________________add_Movies_in_liblary
+        x=Movie()
+        movie_liblary.append(x)
+    for series in range(12):#__________________________________________________________________add_Series_in_liblary
+        series=Series()
+        movie_liblary.append(series)
+    
+    get_movies(movie_liblary)#__________________________________________________________________add_Movies_in_liblary
+    get_series(movie_liblary)#__________________________________________________________________add_Series_in_liblary
+    #search(movie_liblary)#__________________________________________________________________wyszukiwanie _ in_liblary
+    for x in movie_liblary:
+        pass#print(x)    
+
+
